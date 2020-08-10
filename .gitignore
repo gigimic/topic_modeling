@@ -1,0 +1,10 @@
+__pycache__
+.~*
+*.txt
+*.bin
+*.csv
+*.db
+*.png
+*.jpg
+*.jpeg
+.ipynb*
