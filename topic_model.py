@@ -2,7 +2,7 @@ from read_data import get_text_for_topic
 from clean_data import clean_text_string
 from visual_data import visualize_word_cloud
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 # name_topics = ["globalization", "hollywood", "mahatma gandhi", "fake news", "women empowerment"]
 name_topics = ["globalization", "fake news"]
@@ -14,11 +14,9 @@ for index, name_topic in enumerate(name_topics):
     print(topic_clean_text[index][0:100])
 
     
+# This function can be called to visualise the word clloud of various topics
+# visualize_word_cloud(name_topics, topic_clean_text)
 
-for i in range(len(name_topics)):
-    visualize_word_cloud(i, topic_clean_text[i])
-
-plt.show()
 
 # read data
 # clean_data
