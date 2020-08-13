@@ -1,8 +1,12 @@
+import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
 from read_data import get_text_for_topic
 from clean_data import clean_text_string
 from visual_data import visualize_word_cloud
-from sklearn.feature_extraction.text import CountVectorizer
-import pandas as pd
+
+print('Pandas version is : ', pd.__version__)
+
 # import matplotlib.pyplot as plt
 
 # name_topics = ["globalization", "hollywood", "mahatma gandhi", "fake news", "women empowerment"]
@@ -14,7 +18,10 @@ for index, name_topic in enumerate(name_topics):
     topic_clean_text.append(clean_text_string(topic_text))
     print(topic_clean_text[index][0:100])
 
-    
+data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
+print(data['topics'][0])
+print(data.keys())
+
 # This function can be called to visualise the word clloud of various topics
 # visualize_word_cloud(name_topics, topic_clean_text)
 
@@ -23,11 +30,11 @@ for index, name_topic in enumerate(name_topics):
 
 
 # cv = CountVectorizer(stop_words='english')
-cv = CountVectorizer()
-data_cv = cv.fit_transform(topic_clean_text)
-data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
-# data_dtm.index = data_clean.index
-print(data_dtm)
+# cv = CountVectorizer()
+# data_cv = cv.fit_transform(topic_clean_text)
+# data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
+# # data_dtm.index = data_clean.index
+# print(data_dtm)
 
 # read data
 # clean_data
