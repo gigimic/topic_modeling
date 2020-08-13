@@ -18,12 +18,21 @@ for index, name_topic in enumerate(name_topics):
     topic_clean_text.append(clean_text_string(topic_text))
     print(topic_clean_text[index][0:100])
 
-data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
-print(data['topics'][0])
-print(data.keys())
-
 # This function can be called to visualise the word clloud of various topics
 # visualize_word_cloud(name_topics, topic_clean_text)
+
+
+data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
+print(data['topics'][0])
+# print(data['text'][1])
+
+pd.set_option('max_colwidth',150)
+
+data_df = pd.DataFrame.from_dict(data).transpose()
+data_df.columns = data['text']
+data_df = data_df.sort_index()
+print(len(data_df))
+data_df.text.loc['globalization']
 
 # document-term-matrix
 # check this in the data cleaning module
