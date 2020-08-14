@@ -38,8 +38,12 @@ data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
 
 # # data_df.text.loc['globalization']
 
-# document-term-matrix
-# check this in the data cleaning module
+
+
+# the corpus of the text is in data
+# here we create a document term matrix: The most common tokenization technique is to 
+# break down text into words. We can do this using scikit-learn's CountVectorizer, 
+# where every row will represent a different document and every column will represent a different word
 
 
 cv = CountVectorizer(stop_words='english')
@@ -48,7 +52,17 @@ data_cv = cv.fit_transform(data.text)
 data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
 data_dtm.index = data.topics
 print(len(data_dtm))
-print(data_dtm)
+# print(data_dtm)
+
+# Find the top 10 words in each topic
+data_dtm = data_dtm.transpose()
+top_dict = {}
+for c in data_dtm.columns:
+    top = data_dtm[c].sort_values(ascending=False).head(10)
+    top_dict[c]= list(zip(top.index, top.values))
+
+print(top_dict)
+
 
 # read data
 # clean_data
