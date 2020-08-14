@@ -24,21 +24,6 @@ for index, name_topic in enumerate(name_topics):
 
 data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
 # print(data['topics'][0])
-# print(data.text.loc['fake news'])
-# print(data['text'][1])
-
-# TODO here the data frame has to be corrected. the column name should be 'text'
-
-# pd.set_option('max_colwidth',150)
-
-# data_df = pd.DataFrame.from_dict(data).transpose()
-# data_df.columns = data['text']
-# data_df = data_df.sort_index()
-# print(len(data_df))
-
-# # data_df.text.loc['globalization']
-
-
 
 # the corpus of the text is in data
 # here we create a document term matrix: The most common tokenization technique is to 
@@ -54,16 +39,62 @@ data_dtm.index = data.topics
 print(len(data_dtm))
 # print(data_dtm)
 
-# Find the top 10 words in each topic
+# Find the top 20 (most common) words in each topic
 data_dtm = data_dtm.transpose()
 top_dict = {}
 for c in data_dtm.columns:
-    top = data_dtm[c].sort_values(ascending=False).head(10)
+    top = data_dtm[c].sort_values(ascending=False).head(20)
     top_dict[c]= list(zip(top.index, top.values))
 
-print(top_dict)
+# print(top_dict)
 
+# Print the top 10 words from each text 
+for topic, top_words in top_dict.items():
+    print(topic)
+    print(', '.join([word for word, count in top_words[0:9]]))
+    print('---')
 
+# If there are common words in all the topics which appear many times they can be removed.
+# Look at the most common top words --> add them to the stop word list
+from collections import Counter
+
+# Let's first pull out the top 10 words for each topic
+words = []
+for topic in data_dtm.columns:
+    top = [word for (word, count) in top_dict[topic]]
+    for t in top:
+        words.append(t)
+        
+print(words)
+
+# sentiment analysis 
+# Create quick lambda functions to find the polarity and subjectivity of each routine
+# Terminal / Anaconda Navigator: conda install -c conda-forge textblob
+from textblob import TextBlob
+
+pol = lambda x: TextBlob(x).sentiment.polarity
+sub = lambda x: TextBlob(x).sentiment.subjectivity
+
+data['polarity'] = data['text'].apply(pol)
+data['subjectivity'] = data['text'].apply(sub)
+# data
+#  Let's plot the results
+import matplotlib.pyplot as plt
+
+plt.rcParams['figure.figsize'] = [10, 8]
+
+for index, topic in enumerate(data.index):
+    x = data.polarity.loc[topic]
+    y = data.subjectivity.loc[topic]
+    plt.scatter(x, y, color='blue')
+    plt.text(x+.001, y+.001, data['topic'][index], fontsize=10)
+    plt.xlim(-.01, .12) 
+    
+plt.title('Sentiment Analysis', fontsize=20)
+plt.xlabel('<-- Negative -------- Positive -->', fontsize=15)
+plt.ylabel('<-- Facts -------- Opinions -->', fontsize=15)
+
+plt.show()
 # read data
 # clean_data
 # explore_data
