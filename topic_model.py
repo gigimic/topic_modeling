@@ -23,27 +23,32 @@ for index, name_topic in enumerate(name_topics):
 
 
 data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
-print(data['topics'][0])
+# print(data['topics'][0])
+# print(data.text.loc['fake news'])
 # print(data['text'][1])
 
-pd.set_option('max_colwidth',150)
+# TODO here the data frame has to be corrected. the column name should be 'text'
 
-data_df = pd.DataFrame.from_dict(data).transpose()
-data_df.columns = data['text']
-data_df = data_df.sort_index()
-print(len(data_df))
-data_df.text.loc['globalization']
+# pd.set_option('max_colwidth',150)
+
+# data_df = pd.DataFrame.from_dict(data).transpose()
+# data_df.columns = data['text']
+# data_df = data_df.sort_index()
+# print(len(data_df))
+
+# # data_df.text.loc['globalization']
 
 # document-term-matrix
 # check this in the data cleaning module
 
 
-# cv = CountVectorizer(stop_words='english')
+cv = CountVectorizer(stop_words='english')
 # cv = CountVectorizer()
-# data_cv = cv.fit_transform(topic_clean_text)
-# data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
-# # data_dtm.index = data_clean.index
-# print(data_dtm)
+data_cv = cv.fit_transform(data.text)
+data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
+data_dtm.index = data.topics
+print(len(data_dtm))
+print(data_dtm)
 
 # read data
 # clean_data
