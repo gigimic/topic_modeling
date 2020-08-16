@@ -9,8 +9,9 @@ print('Pandas version is : ', pd.__version__)
 
 # import matplotlib.pyplot as plt
 
-# name_topics = ["globalization", "hollywood", "mahatma gandhi", "fake news", "women empowerment"]
-name_topics = ["globalization", "fake news"]
+name_topics = ["globalization", "mahatma gandhi", "fake news", "women empowerment", "Palliative care", 
+"Auschwitz concentration camp"]
+# name_topics = ["globalization", "fake news", "hollywood"]
 topic_clean_text=[]
 for index, name_topic in enumerate(name_topics):
     print(index, name_topic)
@@ -72,23 +73,26 @@ print(words)
 # Terminal / Anaconda Navigator: conda install -c conda-forge textblob
 from textblob import TextBlob
 
+
 pol = lambda x: TextBlob(x).sentiment.polarity
 sub = lambda x: TextBlob(x).sentiment.subjectivity
 
 data['polarity'] = data['text'].apply(pol)
 data['subjectivity'] = data['text'].apply(sub)
+print(data['polarity'])
+print(data['subjectivity'])
 # data
 #  Let's plot the results
 import matplotlib.pyplot as plt
 
 plt.rcParams['figure.figsize'] = [10, 8]
 
-for index, topic in enumerate(data.index):
-    x = data.polarity.loc[topic]
-    y = data.subjectivity.loc[topic]
+for index, topics in enumerate(data.index):
+    x = data.polarity.loc[topics]
+    y = data.subjectivity.loc[topics]
     plt.scatter(x, y, color='blue')
-    plt.text(x+.001, y+.001, data['topic'][index], fontsize=10)
-    plt.xlim(-.01, .12) 
+    plt.text(x+.001, y+.001, data['topics'][index], fontsize=10)
+    # plt.xlim(-.01, .12) 
     
 plt.title('Sentiment Analysis', fontsize=20)
 plt.xlabel('<-- Negative -------- Positive -->', fontsize=15)
