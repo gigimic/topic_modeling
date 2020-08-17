@@ -12,26 +12,29 @@ print('Pandas version is : ', pd.__version__)
 name_topics = ["globalization", "mahatma gandhi", "fake news", "women empowerment", "Palliative care", 
 "Auschwitz concentration camp"]
 # name_topics = ["globalization", "fake news", "hollywood"]
-topic_clean_text=[]
-for index, name_topic in enumerate(name_topics):
-    print(index, name_topic)
-    topic_text = get_text_for_topic(name_topic)
-    topic_clean_text.append(clean_text_string(topic_text))
-    print(topic_clean_text[index][0:100])
+
+# topic_clean_text=[]
+# for index, name_topic in enumerate(name_topics):
+#     print(index, name_topic)
+#     topic_text = get_text_for_topic(name_topic)
+#     topic_clean_text.append(clean_text_string(topic_text))
+#     print(topic_clean_text[index][0:100])
 
 # This function can be called to visualise the word clloud of various topics
 # visualize_word_cloud(name_topics, topic_clean_text)
 
 
-data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
+# data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
+# data.to_pickle("topic_data.pkl")
 # print(data['topics'][0])
+data = pd.read_pickle("topic_data.pkl")
 
 # the corpus of the text is in data
 # here we create a document term matrix: The most common tokenization technique is to 
 # break down text into words. We can do this using scikit-learn's CountVectorizer, 
 # where every row will represent a different document and every column will represent a different word
 
-
+################
 cv = CountVectorizer(stop_words='english')
 # cv = CountVectorizer()
 data_cv = cv.fit_transform(data.text)
@@ -99,6 +102,8 @@ plt.xlabel('<-- Negative -------- Positive -->', fontsize=15)
 plt.ylabel('<-- Facts -------- Opinions -->', fontsize=15)
 
 plt.show()
+
+#########################
 # read data
 # clean_data
 # explore_data
