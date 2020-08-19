@@ -1,5 +1,5 @@
 
-    # here we create a document term matrix: The most common tokenization technique is to 
+# here we create a document term matrix: The most common tokenization technique is to 
 # break down text into words. We can do this using scikit-learn's CountVectorizer, 
 # where every row will represent a different document and every column will represent a different word
 

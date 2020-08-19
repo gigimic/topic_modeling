@@ -1,6 +1,11 @@
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
+import pickle
+from gensim import matutils, models
+import scipy.sparse
+
+
 from read_data import get_text_for_topic
 from clean_data import clean_text_string
 from visual_data import visualize_word_cloud
@@ -28,8 +33,8 @@ name_topics = ["globalization", "mahatma gandhi", "fake news", "women empowermen
 # data.to_pickle("topic_data.pkl")
 # print(data['topics'][0])
 data = pd.read_pickle("topic_data.pkl")
-
 # the corpus of the text is in data
+
 # here we create a document term matrix: The most common tokenization technique is to 
 # break down text into words. We can do this using scikit-learn's CountVectorizer, 
 # where every row will represent a different document and every column will represent a different word
@@ -88,27 +93,39 @@ print(data['subjectivity'])
 #  Let's plot the results
 import matplotlib.pyplot as plt
 
-plt.rcParams['figure.figsize'] = [10, 8]
+# plt.rcParams['figure.figsize'] = [10, 8]
 
-for index, topics in enumerate(data.index):
-    x = data.polarity.loc[topics]
-    y = data.subjectivity.loc[topics]
-    plt.scatter(x, y, color='blue')
-    plt.text(x+.001, y+.001, data['topics'][index], fontsize=10)
-    # plt.xlim(-.01, .12) 
+# for index, topics in enumerate(data.index):
+#     x = data.polarity.loc[topics]
+#     y = data.subjectivity.loc[topics]
+#     plt.scatter(x, y, color='blue')
+#     plt.text(x+.001, y+.001, data['topics'][index], fontsize=10)
+#     # plt.xlim(-.01, .12) 
     
-plt.title('Sentiment Analysis', fontsize=20)
-plt.xlabel('<-- Negative -------- Positive -->', fontsize=15)
-plt.ylabel('<-- Facts -------- Opinions -->', fontsize=15)
+# plt.title('Sentiment Analysis', fontsize=20)
+# plt.xlabel('<-- Negative -------- Positive -->', fontsize=15)
+# plt.ylabel('<-- Facts -------- Opinions -->', fontsize=15)
 
-plt.show()
-
+# plt.show()
 
 # Sentiment of Routine Over Time
-#
+##########################
 
+# topic modeling
+tdm = data_dtm.transpose()
+# print(tdm.head())
 
-#########################
+# We're going to put the term-document matrix into a new gensim format, from df --> sparse matrix --> gensim corpus
+sparse_counts = scipy.sparse.csr_matrix(tdm)
+corpus = matutils.Sparse2Corpus(sparse_counts)
+# Gensim also requires dictionary of the all terms and their respective location in the term-document matrix
+
+id2word = dict((v, k) for k, v in cv.vocabulary_.items())
+# Now that we have the corpus (term-document matrix) and id2word (dictionary of location: term),
+# we need to specify two other parameters as well - the number of topics and the number of passes
+
+lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=6, passes=10)
+print(lda.print_topics())
 # read data
 # clean_data
 # explore_data
