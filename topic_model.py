@@ -9,6 +9,7 @@ import scipy.sparse
 from read_data import get_text_for_topic
 from clean_data import clean_text_string
 from visual_data import visualize_word_cloud
+from document_term_matrix import document_term
 
 print('Pandas version is : ', pd.__version__)
 
@@ -32,7 +33,7 @@ name_topics = ["globalization", "mahatma gandhi", "fake news", "women empowermen
 # data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
 # data.to_pickle("topic_data.pkl")
 # print(data['topics'][0])
-data = pd.read_pickle("topic_data.pkl")
+data_corpus = pd.read_pickle("topic_data.pkl")
 # the corpus of the text is in data
 
 # here we create a document term matrix: The most common tokenization technique is to 
@@ -40,13 +41,21 @@ data = pd.read_pickle("topic_data.pkl")
 # where every row will represent a different document and every column will represent a different word
 
 ################
-cv = CountVectorizer(stop_words='english')
-# cv = CountVectorizer()
-data_cv = cv.fit_transform(data.text)
-data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
-data_dtm.index = data.topics
-print(len(data_dtm))
+
+# cv = CountVectorizer(stop_words='english')
+# # cv = CountVectorizer()
+# data_cv = cv.fit_transform(data.text)
+# data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
+# data_dtm.index = data.topics
+# print('Number of topics..   ', len(data_dtm))
+
+document_term(data_corpus)
+
 # print(data_dtm)
+# data_dtm.to_pickle("dtm_data.pkl")
+
+data_dtm = pd.read_pickle("dtm_data.pkl")
+print(data_dtm)
 
 # Find the top 20 (most common) words in each topic
 data_dtm = data_dtm.transpose()
@@ -112,8 +121,9 @@ import matplotlib.pyplot as plt
 ##########################
 
 # topic modeling
-tdm = data_dtm.transpose()
-# print(tdm.head())
+# tdm = data_dtm.transpose()
+tdm = data_dtm
+print(tdm.head())
 
 # We're going to put the term-document matrix into a new gensim format, from df --> sparse matrix --> gensim corpus
 sparse_counts = scipy.sparse.csr_matrix(tdm)
