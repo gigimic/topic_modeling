@@ -10,6 +10,7 @@ from read_data import get_text_for_topic
 from clean_data import clean_text_string
 from visual_data import visualize_word_cloud
 from document_term_matrix import document_term
+from common_words import most_common_words
 
 print('Pandas version is : ', pd.__version__)
 
@@ -26,78 +27,45 @@ name_topics = ["globalization", "mahatma gandhi", "fake news", "women empowermen
 #     topic_clean_text.append(clean_text_string(topic_text))
 #     print(topic_clean_text[index][0:100])
 
-# This function can be called to visualise the word clloud of various topics
+# This function can be called to visualise the word cloud of various topics
 # visualize_word_cloud(name_topics, topic_clean_text)
-
 
 # data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
 # data.to_pickle("topic_data.pkl")
 # print(data['topics'][0])
-data_corpus = pd.read_pickle("topic_data.pkl")
-# the corpus of the text is in data
 
-# here we create a document term matrix: The most common tokenization technique is to 
-# break down text into words. We can do this using scikit-learn's CountVectorizer, 
-# where every row will represent a different document and every column will represent a different word
+# the corpus of the text is in data
+data_corpus = pd.read_pickle("topic_data.pkl")
 
 ################
+# The document term matrix is generated in the following module
+# document_term(data_corpus)
 
-# cv = CountVectorizer(stop_words='english')
-# # cv = CountVectorizer()
-# data_cv = cv.fit_transform(data.text)
-# data_dtm = pd.DataFrame(data_cv.toarray(), columns=cv.get_feature_names())
-# data_dtm.index = data.topics
-# print('Number of topics..   ', len(data_dtm))
+# once the data is made into a document term matrix, no need to run the module again 
+# as the result is pickled into the pkl file
 
-document_term(data_corpus)
-
-# print(data_dtm)
-# data_dtm.to_pickle("dtm_data.pkl")
-
+# The document term matric is obtained from the pickled data.
 data_dtm = pd.read_pickle("dtm_data.pkl")
-print(data_dtm)
+# print(data_dtm)
 
-# Find the top 20 (most common) words in each topic
-data_dtm = data_dtm.transpose()
-top_dict = {}
-for c in data_dtm.columns:
-    top = data_dtm[c].sort_values(ascending=False).head(20)
-    top_dict[c]= list(zip(top.index, top.values))
+# The most common words in the documents can be checked here and 
+# do any processing like removing the most common words from all topics etc.
 
-# print(top_dict)
+most_common_words(data_dtm)
 
-# Print the top 10 words from each text 
-for topic, top_words in top_dict.items():
-    print(topic)
-    print(', '.join([word for word, count in top_words[0:9]]))
-    print('---')
-
-# If there are common words in all the topics which appear many times they can be removed.
-# Look at the most common top words --> add them to the stop word list
-from collections import Counter
-
-# Let's first pull out the top 10 words for each topic
-words = []
-for topic in data_dtm.columns:
-    top = [word for (word, count) in top_dict[topic]]
-    for t in top:
-        words.append(t)
-        
-print(words)
 
 # sentiment analysis 
 # Create quick lambda functions to find the polarity and subjectivity of each routine
 # Terminal / Anaconda Navigator: conda install -c conda-forge textblob
 from textblob import TextBlob
 
-
 pol = lambda x: TextBlob(x).sentiment.polarity
 sub = lambda x: TextBlob(x).sentiment.subjectivity
 
-data['polarity'] = data['text'].apply(pol)
-data['subjectivity'] = data['text'].apply(sub)
-print(data['polarity'])
-print(data['subjectivity'])
+data_corpus['polarity'] = data_corpus['text'].apply(pol)
+data_corpus['subjectivity'] = data_corpus['text'].apply(sub)
+print(data_corpus['polarity'])
+print(data_corpus['subjectivity'])
 # data
 #  Let's plot the results
 import matplotlib.pyplot as plt
