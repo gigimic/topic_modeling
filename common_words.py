@@ -7,8 +7,8 @@ def most_common_words(data_dtm):
     for c in data_dtm.columns:
         top = data_dtm[c].sort_values(ascending=False).head(20)
         top_dict[c]= list(zip(top.index, top.values))
-        print('printing top words...')
-        print(top_dict[c])
+        # print('printing top words...')
+        # print(top_dict[c])
 
 # print(top_dict)
 
@@ -21,7 +21,6 @@ def most_common_words(data_dtm):
     # If there are common words in all the topics which appear many times they can be removed.
     # Look at the most common top words --> add them to the stop word list
     
-
     # Let's first pull out the top 10 words for each topic
     words = []
     for topic in data_dtm.columns:
@@ -29,7 +28,7 @@ def most_common_words(data_dtm):
         for t in top:
             words.append(t)
             
-    print(words)
+    # print(words)
 
 if __name__ == "__main__":
     import doctest

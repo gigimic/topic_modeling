@@ -16,6 +16,7 @@ def document_term(data):
     # print(len(data_dtm))
     # print(data_dtm)
     data_dtm.to_pickle("dtm_data.pkl")
+    pickle.dump(cv, open("cv.pkl", "wb"))
 
 
 

@@ -11,6 +11,7 @@ from clean_data import clean_text_string
 from visual_data import visualize_word_cloud
 from document_term_matrix import document_term
 from common_words import most_common_words
+from sentiment_analysis import senti_analyse
 
 print('Pandas version is : ', pd.__version__)
 
@@ -51,53 +52,27 @@ data_dtm = pd.read_pickle("dtm_data.pkl")
 # The most common words in the documents can be checked here and 
 # do any processing like removing the most common words from all topics etc.
 
-most_common_words(data_dtm)
+# most_common_words(data_dtm)
 
 
 # sentiment analysis 
-# Create quick lambda functions to find the polarity and subjectivity of each routine
-# Terminal / Anaconda Navigator: conda install -c conda-forge textblob
-from textblob import TextBlob
+senti_analyse(data_corpus)
 
-pol = lambda x: TextBlob(x).sentiment.polarity
-sub = lambda x: TextBlob(x).sentiment.subjectivity
-
-data_corpus['polarity'] = data_corpus['text'].apply(pol)
-data_corpus['subjectivity'] = data_corpus['text'].apply(sub)
-print(data_corpus['polarity'])
-print(data_corpus['subjectivity'])
-# data
-#  Let's plot the results
-import matplotlib.pyplot as plt
-
-# plt.rcParams['figure.figsize'] = [10, 8]
-
-# for index, topics in enumerate(data.index):
-#     x = data.polarity.loc[topics]
-#     y = data.subjectivity.loc[topics]
-#     plt.scatter(x, y, color='blue')
-#     plt.text(x+.001, y+.001, data['topics'][index], fontsize=10)
-#     # plt.xlim(-.01, .12) 
-    
-# plt.title('Sentiment Analysis', fontsize=20)
-# plt.xlabel('<-- Negative -------- Positive -->', fontsize=15)
-# plt.ylabel('<-- Facts -------- Opinions -->', fontsize=15)
-
-# plt.show()
 
 # Sentiment of Routine Over Time
 ##########################
 
 # topic modeling
-# tdm = data_dtm.transpose()
-tdm = data_dtm
-print(tdm.head())
+tdm = data_dtm.transpose()
+# tdm = data_dtm
+# print(tdm.head())
 
 # We're going to put the term-document matrix into a new gensim format, from df --> sparse matrix --> gensim corpus
 sparse_counts = scipy.sparse.csr_matrix(tdm)
 corpus = matutils.Sparse2Corpus(sparse_counts)
-# Gensim also requires dictionary of the all terms and their respective location in the term-document matrix
 
+# Gensim also requires dictionary of the all terms and their respective location in the term-document matrix
+cv = pickle.load(open("cv.pkl", "rb"))
 id2word = dict((v, k) for k, v in cv.vocabulary_.items())
 # Now that we have the corpus (term-document matrix) and id2word (dictionary of location: term),
 # we need to specify two other parameters as well - the number of topics and the number of passes
