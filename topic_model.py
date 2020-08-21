@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 import pickle
 from gensim import matutils, models
 import scipy.sparse
-
+# import matplotlib.pyplot as plt
 
 from read_data import get_text_for_topic
 from clean_data import clean_text_string
@@ -14,8 +14,6 @@ from common_words import most_common_words
 from sentiment_analysis import senti_analyse
 
 print('Pandas version is : ', pd.__version__)
-
-# import matplotlib.pyplot as plt
 
 name_topics = ["globalization", "mahatma gandhi", "fake news", "women empowerment", "Palliative care", 
 "Auschwitz concentration camp"]
@@ -79,6 +77,18 @@ id2word = dict((v, k) for k, v in cv.vocabulary_.items())
 
 lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=6, passes=10)
 print(lda.print_topics())
+
+#  Let's take a look at which topics each transcript contains
+corpus_transformed = lda[corpus]
+topic_distribution=list(zip([a for [(a,b)] in corpus_transformed], data_dtm.index))
+# print(list(zip([a for [(a,b)] in corpus_transformed], data_dtm.index)))
+
+# for a, b in data_dtm.index:
+
+
+# improve it with including nouns only or nouns and adjectives
+
+
 # read data
 # clean_data
 # explore_data
