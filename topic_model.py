@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
+# from sklearn.feature_extraction.text import CountVectorizer
 import pickle
-from gensim import matutils, models
-import scipy.sparse
+# from gensim import matutils, models
+# import scipy.sparse
 # import matplotlib.pyplot as plt
 
 from read_data import get_text_for_topic
@@ -12,6 +12,7 @@ from visual_data import visualize_word_cloud
 from document_term_matrix import document_term
 from common_words import most_common_words
 from sentiment_analysis import senti_analyse
+from topic_distribution import topic_distrbut
 
 print('Pandas version is : ', pd.__version__)
 
@@ -54,47 +55,22 @@ data_dtm = pd.read_pickle("dtm_data.pkl")
 
 
 # sentiment analysis 
-senti_analyse(data_corpus)
+# senti_analyse(data_corpus)
 
-
-# Sentiment of Routine Over Time
-##########################
+# Sentiment of each essay can be divided into several parts and can be checked the 
+# sentiments changing over time
 
 # topic modeling
 tdm = data_dtm.transpose()
+topic_distribution=topic_distrbut(tdm)
 # tdm = data_dtm
-# print(tdm.head())
 
-# We're going to put the term-document matrix into a new gensim format, from df --> sparse matrix --> gensim corpus
-sparse_counts = scipy.sparse.csr_matrix(tdm)
-corpus = matutils.Sparse2Corpus(sparse_counts)
-
-# Gensim also requires dictionary of the all terms and their respective location in the term-document matrix
-cv = pickle.load(open("cv.pkl", "rb"))
-id2word = dict((v, k) for k, v in cv.vocabulary_.items())
-# Now that we have the corpus (term-document matrix) and id2word (dictionary of location: term),
-# we need to specify two other parameters as well - the number of topics and the number of passes
-
-lda = models.LdaModel(corpus=corpus, id2word=id2word, num_topics=6, passes=10)
-print(lda.print_topics())
-
-#  Let's take a look at which topics each transcript contains
-corpus_transformed = lda[corpus]
-topic_distribution=list(zip([a for [(a,b)] in corpus_transformed], data_dtm.index))
-# print(list(zip([a for [(a,b)] in corpus_transformed], data_dtm.index)))
-
-# for a, b in data_dtm.index:
-
+print('topics are....')
+for entry in topic_distribution:
+    print(entry)
 
 # improve it with including nouns only or nouns and adjectives
 
-
-# read data
-# clean_data
-# explore_data
-# TODO: word count scatter plot for all topics in one graph
-# TODO: check any more stopwords to be added
-# TODO: document term matrix
 print('done')
 
 
