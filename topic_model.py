@@ -13,6 +13,7 @@ from document_term_matrix import document_term
 from common_words import most_common_words
 from sentiment_analysis import senti_analyse
 from topic_distribution import topic_distrbut
+from generate_text import generated_text
 
 print('Pandas version is : ', pd.__version__)
 
@@ -78,59 +79,60 @@ data_dtm = pd.read_pickle("dtm_data.pkl")
 
 # improve it with including nouns only or nouns and adjectives
 
-# Extract only Ali Wong's text
+# Extract only one topic text
 top1_text = data_orig.text.loc[1]
 # top1_text = data_corpus.head[0]
 print(top1_text[:200])
 print(data_corpus.topics)
 
+gen_tex = generated_text(top1_text)
 
-from collections import defaultdict
+# from collections import defaultdict
 
-def markov_chain(text):
-    '''The input is a string of text and the output will be a dictionary with each word as
-       a key and each value as the list of words that come after the key in the text.'''
+# def markov_chain(text):
+#     '''The input is a string of text and the output will be a dictionary with each word as
+#        a key and each value as the list of words that come after the key in the text.'''
     
-    # Tokenize the text by word, though including punctuation
-    words = text.split(' ')
+#     # Tokenize the text by word, though including punctuation
+#     words = text.split(' ')
     
-    # Initialize a default dictionary to hold all of the words and next words
-    m_dict = defaultdict(list)
+#     # Initialize a default dictionary to hold all of the words and next words
+#     m_dict = defaultdict(list)
     
-    # Create a zipped list of all of the word pairs and put them in word: list of next words format
-    for current_word, next_word in zip(words[0:-1], words[1:]):
-        m_dict[current_word].append(next_word)
+#     # Create a zipped list of all of the word pairs and put them in word: list of next words format
+#     for current_word, next_word in zip(words[0:-1], words[1:]):
+#         m_dict[current_word].append(next_word)
 
-    # Convert the default dict back into a dictionary
-    m_dict = dict(m_dict)
-    return m_dict
+#     # Convert the default dict back into a dictionary
+#     m_dict = dict(m_dict)
+#     return m_dict
 
-# Create the dictionary for Ali's routine, take a look at it
-top1_dict = markov_chain(top1_text)
-# print(top1_dict)
+# # Create the dictionary for Ali's routine, take a look at it
+# top1_dict = markov_chain(top1_text)
+# # print(top1_dict)
 
-import random
+# import random
 
-def generate_sentence(chain, count=100):
-    '''Input a dictionary in the format of key = current word, value = list of next words
-       along with the number of words you would like to see in your generated sentence.'''
+# def generate_sentence(chain, count=100):
+#     '''Input a dictionary in the format of key = current word, value = list of next words
+#        along with the number of words you would like to see in your generated sentence.'''
 
-    # Capitalize the first word
-    word1 = random.choice(list(chain.keys()))
-    sentence = word1.capitalize()
+#     # Capitalize the first word
+#     word1 = random.choice(list(chain.keys()))
+#     sentence = word1.capitalize()
 
-    # Generate the second word from the value list. Set the new word as the first word. Repeat.
-    for i in range(count-1):
-        word2 = random.choice(chain[word1])
-        word1 = word2
-        sentence += ' ' + word2
+#     # Generate the second word from the value list. Set the new word as the first word. Repeat.
+#     for i in range(count-1):
+#         word2 = random.choice(chain[word1])
+#         word1 = word2
+#         sentence += ' ' + word2
 
-    # End it with a period
-    sentence += '.'
-    return(sentence)
+#     # End it with a period
+#     sentence += '.'
+#     return(sentence)
 
-gen_text=generate_sentence(top1_dict)
-print(gen_text)
+# gen_text=generate_sentence(top1_dict)
+# print(gen_text)
 print('done')
 
 
