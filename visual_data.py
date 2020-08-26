@@ -5,10 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-# for i in range(len(name_topics)):
-#     visualize_word_cloud(i, topic_clean_text[i])
-
-
 def visualize_word_cloud(name_topics, text):
     for i in range(len(name_topics)):
         plt.subplot(1, 2, i+1)
