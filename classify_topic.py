@@ -17,12 +17,10 @@ def nouns(text):
     '''Given a string of text, tokenize the text and pull out only the nouns.'''
     is_noun = lambda pos: pos[:2] == 'NN'
     tokenized = word_tokenize(text)
+    # print(pos_tag(tokenized))
     all_nouns = [word for (word, pos) in pos_tag(tokenized) if is_noun(pos)] 
     return ' '.join(all_nouns)
 
-# Read in the cleaned data, before the CountVectorizer step
-# data_clean = pd.read_pickle('data_clean.pkl')
-# data_clean
 
 # Apply the nouns function to the transcripts to filter only on nouns
 data_nouns = pd.DataFrame(data_corpus.text.apply(nouns))
@@ -30,7 +28,6 @@ data_nouns.topics = data_corpus.topics
 
 print(len(data_nouns))
 # print(data_nouns.topics)
-
 
 # Create a new document-term matrix using only nouns
 from sklearn.feature_extraction import text
@@ -61,7 +58,57 @@ print(ldan.print_topics())
 corpus_transformed = ldan[corpusn]
 topic_distribution=list(zip([a for [(a,b)] in corpus_transformed], data_dtmn.index))
 # print(topic_distribution)
-print('topics are....')
+print('topics are....using nouns only')
+for entry in topic_distribution:
+    print(entry)
+
+
+def nouns_adj(text):
+    '''Given a string of text, tokenize the text and pull out only the nouns.'''
+    is_noun = lambda pos: pos[:2] == 'NN' or pos[:2] == 'JJ' 
+    tokenized = word_tokenize(text)
+    # print(pos_tag(tokenized))
+    all_nouns_adj = [word for (word, pos) in pos_tag(tokenized) if is_noun(pos)] 
+    return ' '.join(all_nouns_adj)
+
+
+# Apply the nouns_adj function to the transcripts to filter only on nouns and adjectives
+data_nouns_adj = pd.DataFrame(data_corpus.text.apply(nouns_adj))
+data_nouns_adj.topics = data_corpus.topics
+
+print(len(data_nouns_adj))
+# print(data_nouns.topics)
+
+# Create a new document-term matrix using only nouns
+from sklearn.feature_extraction import text
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Re-add the additional stop words since we are recreating the document-term matrix
+add_stop_words = ['like', 'im', 'know', 'just', 'dont', 'thats', 'right', 'people',
+                  'youre', 'got', 'gonna', 'time', 'think', 'yeah', 'said']
+stop_words = text.ENGLISH_STOP_WORDS.union(add_stop_words)
+
+# Recreate a document-term matrix with only nouns
+cvnadj = CountVectorizer(stop_words=stop_words)
+data_cvnadj = cvnadj.fit_transform(data_nouns_adj.text)
+data_dtmnadj = pd.DataFrame(data_cvnadj.toarray(), columns=cvnadj.get_feature_names())
+data_dtmnadj.index = data_nouns_adj.topics
+
+#  Create the gensim corpus
+corpusnadj = matutils.Sparse2Corpus(scipy.sparse.csr_matrix(data_dtmnadj.transpose()))
+
+# Create the vocabulary dictionary
+id2wordnadj = dict((v, k) for k, v in cvnadj.vocabulary_.items())
+
+# Let's start with 3 topics
+ldanadj = models.LdaModel(corpus=corpusnadj, num_topics=3, id2word=id2wordnadj, passes=10)
+print(ldanadj.print_topics())
+
+# Let's take a look at which topics each transcript contains
+corpus_transformed = ldanadj[corpusnadj]
+topic_distribution=list(zip([a for [(a,b)] in corpus_transformed], data_dtmnadj.index))
+# print(topic_distribution)
+print('topics are....using nouns and adjectives only')
 for entry in topic_distribution:
     print(entry)
 
