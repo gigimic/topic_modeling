@@ -35,7 +35,7 @@ name_topics = ["globalization", "mahatma gandhi", "fake news", "women empowermen
 # data_orig = pd.DataFrame({'topics':name_topics, 'text':orig_text})
 # data_orig.to_pickle("data_original.pkl")
 
-data_orig=pd.read_pickle('data_original.pkl')
+# data_orig=pd.read_pickle('data_original.pkl')
 
 # data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
 # data.to_pickle("topic_data.pkl")
@@ -68,14 +68,14 @@ data_dtm = pd.read_pickle("dtm_data.pkl")
 # sentiments changing over time
 
 # topic modeling
-# tdm = data_dtm.transpose()
-# topic_distribution=topic_distrbut(tdm)
+tdm = data_dtm.transpose()
+topic_distribution=topic_distrbut(tdm)
 
 # tdm = data_dtm
 
-# print('topics are....')
-# for entry in topic_distribution:
-#     print(entry)
+print('topics are....')
+for entry in topic_distribution:
+    print(entry)
 
 # improve it with including nouns only or nouns and adjectives
 
@@ -85,7 +85,7 @@ top1_text = data_orig.text.loc[1]
 # print(top1_text[:200])
 # print(data_corpus.topics)
 
-gen_tex = generated_text(top1_text)
+# gen_tex = generated_text(top1_text)
 # print(gen_text)
 
 print('done')
