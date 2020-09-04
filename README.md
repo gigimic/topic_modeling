@@ -4,7 +4,17 @@ data collected from various sources
 cleaned the data: removed punctuations, special characters, numbers and kept only the text
 cleaned data was saved as a pkl file (pickle file - binary): corpus data
 
-document term matrix was generated using sklearn - countervectorizer
+text vectorization: It is the method to transform text into numerical vectors
+Most popular methods are 'Bag of words', or TF-IDF
+'Bag of words' provides the frequency of words in each document
+TF-IDF provides the normalized frequency
+TF-IDF algorithm
+TF – shows the frequency of the term in the text, as compared with the total number of the words in the text.
+IDF – is the inverse frequency of terms in the text. It simply displays the importance of each term. It is calculated as a logarithm of the number of texts divided by the number of texts containing this term.
+document term matrix was generated using sklearn - countvectorizer
+countvectorizer use the method 'Bag of words'
+
+
 word cloud was used to visualize the most common words
 if there are common words in all the text, they can be removed. 
 
