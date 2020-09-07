@@ -8,8 +8,8 @@ text vectorization: It is the method to transform text into numerical vectors
 Most popular methods are 'Bag of words', or TF-IDF
 'Bag of words' provides the frequency of words in each document
 TF-IDF provides the normalized frequency
-TF-IDF algorithm
-TF – shows the frequency of the term in the text, as compared with the total number of the words in the text.
+TF-IDF algorithm (Term Frequency-Inverse Document Frequency)
+TF – shows the frequency of the term in the text, as compared with the total number of the words in the text. It is the ratio of the number of times the term appears in the text to the total number of terms in the text.
 IDF – is the inverse frequency of terms in the text. It simply displays the importance of each term. It is calculated as a logarithm of the number of texts divided by the number of texts containing this term.
 document term matrix was generated using sklearn - countvectorizer
 countvectorizer use the method 'Bag of words'
