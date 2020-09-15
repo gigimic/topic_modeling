@@ -2,6 +2,10 @@ import pickle
 from gensim import matutils, models
 import scipy.sparse
 from sklearn.feature_extraction.text import CountVectorizer
+# Plotting tools
+# import pyLDAvis
+# import pyLDAvis.gensim  # don't skip this
+# import matplotlib.pyplot as plt
 
 
 def topic_distrbut(tdm):
@@ -25,11 +29,13 @@ def topic_distrbut(tdm):
     dtm = tdm.transpose()
     corpus_transformed = lda[corpus]
     topic_distribution=list(zip([a for [(a,b)] in corpus_transformed], dtm.index))
+    # Visualize the topics
+    # pyLDAvis.enable_notebook()
+    # vis = pyLDAvis.gensim.prepare(lda, corpus, id2word)
+    # pyLDAvis.save_html(vis, 'LDA_Visualization.html')
+    # vis
+
     return topic_distribution
-
-
-
-
 
 
 if __name__ == "__main__":

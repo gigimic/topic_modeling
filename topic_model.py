@@ -35,7 +35,7 @@ name_topics = ["globalization", "mahatma gandhi", "fake news", "women empowermen
 # data_orig = pd.DataFrame({'topics':name_topics, 'text':orig_text})
 # data_orig.to_pickle("data_original.pkl")
 
-# data_orig=pd.read_pickle('data_original.pkl')
+data_orig=pd.read_pickle('data_original.pkl')
 
 # data = pd.DataFrame({'topics':name_topics, 'text':topic_clean_text})
 # data.to_pickle("topic_data.pkl")
