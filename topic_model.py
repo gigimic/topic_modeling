@@ -14,6 +14,7 @@ from common_words import most_common_words
 from sentiment_analysis import senti_analyse
 from topic_distribution import topic_distrbut
 from generate_text import generated_text
+from summarization import text_summary
 
 print('Pandas version is : ', pd.__version__)
 
@@ -68,25 +69,30 @@ data_dtm = pd.read_pickle("dtm_data.pkl")
 # sentiments changing over time
 
 # topic modeling
-tdm = data_dtm.transpose()
-topic_distribution=topic_distrbut(tdm)
+# tdm = data_dtm.transpose()
+# topic_distribution=topic_distrbut(tdm)
 
 # tdm = data_dtm
 
-print('topics are....')
-for entry in topic_distribution:
-    print(entry)
+# print('topics are....')
+# for entry in topic_distribution:
+#     print(entry)
 
 # improve it with including nouns only or nouns and adjectives
 
 # Extract only one topic text
-top1_text = data_orig.text.loc[1]
+top1_text = data_orig.text.loc[0]
 # top1_text = data_corpus.head[0]
-# print(top1_text[:200])
+print(top1_text[:200])
 # print(data_corpus.topics)
 
 # gen_tex = generated_text(top1_text)
 # print(gen_text)
+
+
+# text summaization
+text_summary(text)
+
 
 print('done')
 
