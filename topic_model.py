@@ -91,7 +91,7 @@ print(top1_text[:200])
 
 
 # text summaization
-text_summary(text)
+text_summary(top1_text)
 
 
 print('done')
