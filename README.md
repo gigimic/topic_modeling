@@ -31,7 +31,7 @@ The rule-based system works like the following:
     Counts the number of positive and negative words that appear in a given text.
     If the number of positive word appearances is greater than the number of negative word appearances, the system returns a positive sentiment, and vice versa. If the numbers are even, the system will return a neutral sentiment.
 
-In automatic approach, the task is considered a classification problem with categories of positive, nagatice or neutral.
+In automatic approach, the task is considered a classification problem with categories of positive, nagative or neutral.
 Here a training (tagged) set is used for feature extraction and fed into the machine learning algorithms
 
 The feature vector generated using the feature extraction is used in the model to classify the text and tags them.
