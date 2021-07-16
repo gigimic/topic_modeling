@@ -13,13 +13,13 @@ TF – shows the frequency of the term in the text, as compared with the total n
 IDF – is the inverse frequency of terms in the text. It simply displays the importance of each term. It is calculated as a logarithm of the number of texts divided by the number of texts containing this term.
 document term matrix was generated using sklearn - countvectorizer
 countvectorizer use the method 'Bag of words'
-
+Document term matrix is generated in the module document_term_matrix. The dtm is then saved as a pkl file.
 
 word cloud was used to visualize the most common words
 if there are common words in all the text, they can be removed. 
 
 sentiment analysis was done with polarity (positive and negative) and subjectivity (facts and opinions).
-this gives an idea of which text gives positive news and facts and which one gives negative news and opinions.
+This gives an idea of which text gives positive news and facts and which one gives negative news and opinions.
 The sentiment function of textblob returns two properties, polarity, and subjectivity.
 Polarity is float which lies in the range of [-1,1] where 1 means positive statement and -1 means a negative statement. Subjective sentences generally refer to personal opinion, emotion or judgment whereas objective refers to factual information. Subjectivity is also a float which lies in the range of [0,1].
 
@@ -39,8 +39,8 @@ The feature vector generated using the feature extraction is used in the model t
 textblob uses Naive Bayes and Decision Tree classifiers.
 
 
-topic modelling was done to classify the text into different topics. The number of topics were selected by trial and error method.
+topic modelling was done to classify the text into different topics. The number of topics were selected by trial and error method. Data was converted to a gensim corpus and then LDA model was applied to classify the document into different topics.
 
 text generation was also attempted.
 
-entry point is topic_model
+topic_model
