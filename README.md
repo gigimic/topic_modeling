@@ -18,6 +18,9 @@ Document term matrix is generated in the module document_term_matrix. The dtm is
 word cloud was used to visualize the most common words
 if there are common words in all the text, they can be removed. 
 
+
+### Sentiment Analysis 
+
 sentiment analysis was done with polarity (positive and negative) and subjectivity (facts and opinions).
 This gives an idea of which text gives positive news and facts and which one gives negative news and opinions.
 The sentiment function of textblob returns two properties, polarity, and subjectivity.
@@ -40,6 +43,8 @@ textblob uses Naive Bayes and Decision Tree classifiers.
 
 
 topic modelling was done to classify the text into different topics. The number of topics were selected by trial and error method. Data was converted to a gensim corpus and then LDA model was applied to classify the document into different topics.
+
+Text summarization was done using the frequent words in a document. This method is known as extractive summarization. This method rely on extracting several parts, such as phrases and sentences, from a piece of text and stack them together to create a summary. Therefore, identifying the right sentences for summarization is of utmost importance in an extractive method.
 
 text generation was also attempted.
 
